@@ -28,11 +28,10 @@ impl GameViewCamera {
     }
 
     pub fn sync_viewport(
-        tabs:    Query<Ref<GameView>>,
-        windows: Query<Ref<Window>, With<PrimaryWindow>>,
+        game_view:   Res<GameView>,
+        windows:     Query<Ref<Window>, With<PrimaryWindow>>,
         mut cameras: Query<Mut<Camera>, With<GameViewCamera>>)
     {
-        let game_view = tabs.single();
         let Ok(window) = windows.get_single() else {
             return;
         };

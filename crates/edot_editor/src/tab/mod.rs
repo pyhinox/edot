@@ -1,7 +1,6 @@
 use bevy::prelude::*;
 use edot_tab::prelude::TabManager;
-use crate::tab::game_view::GameView;
-use crate::tab::game_view::viewport::GameViewCamera;
+use crate::tab::game_view::{GameView, GameViewPlugin};
 use crate::tab::hierarchy::Hierarchy;
 use crate::tab::inspector::Inspector;
 
@@ -14,17 +13,18 @@ pub(crate) struct EditorTabPlugin;
 impl Plugin for EditorTabPlugin {
     fn build(&self, app: &mut App) {
         app
-            .add_systems(Startup, setup)
-            .add_systems(PostUpdate, GameViewCamera::sync_viewport)
+            .add_plugins(GameViewPlugin)
+            .add_systems(PostStartup, setup)
         ;
     }
 }
 
 fn setup(
-    mut commands: Commands,
+    mut commands:    Commands,
     mut tab_manager: ResMut<TabManager>,
+    game_view:       Res<GameView>,
 ) {
-    let game_view = GameView::spawn(&mut commands);
+    let game_view = game_view.entity;
     let inspector = Inspector::spawn(&mut commands);
     let hierarchy = Hierarchy::spawn(&mut commands);
     let root = tab_manager.set_root_tab(game_view);

@@ -1,4 +1,3 @@
-use std::borrow::Cow;
 use bevy::prelude::*;
 use bevy_egui::egui::Ui;
 
@@ -21,10 +20,10 @@ pub struct TabBuilder {
 }
 
 impl TabBuilder {
-    pub fn new(name: impl Into<Cow<'static, str>>) -> Self {
+    pub fn new(name: impl Into<Name>) -> Self {
         Self {
             tab: TabBundle {
-                name:      Name::new(name),
+                name:      name.into(),
                 tab:       Tab,
                 clear_background: ClearBackground::default(),
                 on_show:   OnShowTab(|_, _, _| {}),
