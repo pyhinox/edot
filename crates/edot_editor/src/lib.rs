@@ -1,4 +1,4 @@
-mod tab;
+pub mod tab;
 
 use bevy::prelude::*;
 use edot_tab::prelude::EdotTabPlugin;

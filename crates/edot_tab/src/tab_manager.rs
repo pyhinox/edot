@@ -75,7 +75,6 @@ impl TabManager {
                 Ok(cx) => cx.clone(),
                 Err(_err) => return,
             };
-
             {
                 let extract_tabs = manager.extract_tabs(world);
                 let dock_state = &mut manager.dock_state;

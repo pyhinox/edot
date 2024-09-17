@@ -1,6 +1,7 @@
 use bevy::prelude::*;
 use edot_tab::prelude::TabManager;
 use crate::tab::game_view::GameView;
+use crate::tab::game_view::viewport::GameViewCamera;
 use crate::tab::inspector::Inspector;
 
 pub mod game_view;
@@ -11,7 +12,9 @@ pub(crate) struct EditorTabPlugin;
 impl Plugin for EditorTabPlugin {
     fn build(&self, app: &mut App) {
         app
-            .add_systems(Startup, setup);
+            .add_systems(Startup, setup)
+            .add_systems(PostUpdate, GameViewCamera::sync_viewport)
+        ;
     }
 }
 
