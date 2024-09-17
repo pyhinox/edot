@@ -1,19 +1,37 @@
 use bevy::prelude::*;
 use edot_tab::prelude::{CommandsExt, TabBuilder};
 
-#[derive(Debug, Default, Component)]
-#[component(storage="SparseSet")]
-pub struct Inspector;
 
-impl Inspector {
-    const NAME: &'static str = "Inspector";
+pub struct InspectorPlugin;
 
-    pub fn spawn(commands: &mut Commands) -> Entity {
-        let tab = TabBuilder::new(Self::NAME);
-
-        commands
-            .register_tab(tab)
-            .insert(Inspector)
-            .id()
+impl Plugin for InspectorPlugin {
+    fn build(&self, app: &mut App) {
+        app
+            .init_resource::<Inspector>()
+            .add_systems(Startup, setup)
+        ;
     }
+}
+#[derive(Debug, Resource)]
+pub struct Inspector {
+    pub entity:   Entity,
+    pub tab_name: Name,
+}
+
+impl Default for Inspector {
+    fn default() -> Self {
+        Self {
+            entity:   Entity::PLACEHOLDER,
+            tab_name: Name::from("Inspector"),
+        }
+    }
+}
+
+fn setup(
+    mut inspector: ResMut<Inspector>,
+    mut commands:  Commands,
+) {
+    let tab = TabBuilder::new(Name::clone(&inspector.tab_name));
+
+    inspector.entity = commands.register_tab(tab).id();
 }
