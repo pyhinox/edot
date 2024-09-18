@@ -22,6 +22,7 @@ fn setup(
     commands.spawn((
         TransformBundle::default(),
         Inspecting,
+        Name::new("Inspecting")
     ));
     gizmos.circle_2d(Vec2::ZERO, 5.0, Color::WHITE);
 }

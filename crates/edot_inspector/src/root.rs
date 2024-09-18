@@ -1,4 +1,3 @@
-use std::any::TypeId;
 use std::sync::Arc;
 use bevy::ecs::component::ComponentId;
 use bevy::prelude::*;

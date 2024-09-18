@@ -48,9 +48,9 @@ fn setup(
 
 fn on_show(_: Entity, world: &mut World, ui: &mut egui::Ui) {
     let targets: Vec<_> = world
-        .query_filtered::<Entity, With<Transform>>()
+        .query_filtered::<Entity, With<Inspecting>>()
         .iter(world).collect();
-    targets.into_iter().for_each(|target| {
+    targets.into_iter().take(1).for_each(|target| {
         let component_ids: Vec<_> = world
             .inspect_entity(target).into_iter()
             .map(ComponentInfo::id)

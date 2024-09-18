@@ -1,4 +1,5 @@
 use bevy::prelude::*;
+use bevy_egui::egui::emath::Numeric;
 use bevy_egui::egui::Ui;
 use crate::InspectorTypeExt;
 use crate::primitive::InspectorPrimitive;
@@ -24,7 +25,7 @@ impl Plugin for NumericInspectorPrimitivePlugin {
 }
 
 impl<T> InspectorPrimitive for T
-    where T: Reflect + TypePath + 'static + std::fmt::Display,
+    where T: Reflect + TypePath + 'static + std::fmt::Display + Numeric,
 {
     fn show(cx: &InspectorContext, world: &mut World, ui: &mut Ui) {
         ui.label(cx.name.as_str());

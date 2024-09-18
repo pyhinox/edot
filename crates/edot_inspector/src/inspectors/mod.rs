@@ -2,10 +2,12 @@ use std::sync::Arc;
 use bevy::prelude::{AppTypeRegistry, World};
 use bevy::reflect::{Access, OffsetAccess, ParsedPath, Reflect, ReflectKind, ReflectRef, TypeInfo};
 use bevy_egui::egui;
+use bevy_egui::egui::Ui;
 use crate::primitive::ReflectInspectorPrimitive;
 use crate::root::{EntityComponent, InspectorContext, InspectorRoot};
 
 pub fn inspect_entity_component(target: EntityComponent, world: &mut World, ui: &mut egui::Ui) {
+    ui.ctx().options_mut(|options| options.warn_on_id_clash = false);
     let path = ParsedPath(vec![]);
     let Some(target_ref) = target.reflect_ref(world, &path) else {
         return;
@@ -19,7 +21,7 @@ pub fn inspect_entity_component(target: EntityComponent, world: &mut World, ui: 
     inspect(&cx, world, ui);
 }
 
-pub fn inspect(cx: &InspectorContext, world: &mut World, ui: &mut egui::Ui) {
+pub fn inspect(cx: &InspectorContext, world: &mut World, ui: &mut Ui) {
     let primitive = {
         let registry = world.resource::<AppTypeRegistry>().read();
         let type_id =  {
@@ -34,31 +36,22 @@ pub fn inspect(cx: &InspectorContext, world: &mut World, ui: &mut egui::Ui) {
         primitive.show(cx, world, ui);
         return;
     }
-    let target_ref = cx.reflect_ref(world);
-    match target_ref.reflect_ref() {
-        ReflectRef::Struct(_) => inspect_struct(cx, world, ui),
-        ReflectRef::TupleStruct(val) => {
-            println!("{}", val.reflect_type_path());
-        },
-        ReflectRef::Tuple(val) => {
-            println!("{}", val.reflect_type_path());
-        },
-        ReflectRef::List(val) => {
-            println!("{}", val.reflect_type_path());
-        },
-        ReflectRef::Array(val) => {
-            println!("{}", val.reflect_type_path());
-        },
-        ReflectRef::Map(val) => {
-            println!("{}", val.reflect_type_path());
-        },
-        ReflectRef::Enum(val) => {
-            println!("{}", val.reflect_type_path());
-        },
-        ReflectRef::Value(val) => {
-            println!("{}", val.reflect_type_path());
-        },
-    }
+    let show = |ui: &mut Ui| {
+        let target_ref = cx.reflect_ref(world);
+        match target_ref.reflect_ref() {
+            ReflectRef::Struct(_) => inspect_struct(cx, world, ui),
+            ReflectRef::TupleStruct(val) => println!("{}", val.reflect_type_path()),
+            ReflectRef::Tuple(val) => println!("{}", val.reflect_type_path()),
+            ReflectRef::List(val) => println!("{}", val.reflect_type_path()),
+            ReflectRef::Array(val) => println!("{}", val.reflect_type_path()),
+            ReflectRef::Map(val) => println!("{}", val.reflect_type_path()),
+            ReflectRef::Enum(val) => println!("{}", val.reflect_type_path()),
+            ReflectRef::Value(val) => println!("{}", val.reflect_type_path()),
+        }
+    };
+    egui::CollapsingHeader::new(cx.name.as_str())
+        .default_open(false)
+        .show(ui, show);
 }
 
 fn inspect_struct(cx: &InspectorContext, world: &mut World, ui: &mut egui::Ui) {
