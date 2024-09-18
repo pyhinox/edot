@@ -30,3 +30,9 @@ where T: InspectorPrimitive
         }
     }
 }
+
+impl ReflectInspectorPrimitive {
+    pub fn show(self, cx: &InspectorContext, world: &mut World, ui: &mut Ui) {
+        (self.func)(cx, world, ui);
+    }
+}

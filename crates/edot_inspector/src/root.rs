@@ -1,3 +1,4 @@
+use std::any::TypeId;
 use std::sync::Arc;
 use bevy::ecs::component::ComponentId;
 use bevy::prelude::*;
@@ -10,6 +11,7 @@ pub enum InspectorRootId {
 
 pub trait InspectorRoot {
     fn id(&self) -> InspectorRootId;
+    fn type_id(&self, world: &World) -> Option<TypeId>;
     fn reflect_ref<'a>(&self, world: &'a World, path: &ParsedPath) -> Option<&'a dyn Reflect>;
     fn set_reflect(&self, world: &mut World, path: &ParsedPath, value: &dyn Reflect);
 }
@@ -37,6 +39,13 @@ impl EntityComponent {
 impl InspectorRoot for EntityComponent {
     fn id(&self) -> InspectorRootId {
         InspectorRootId::Entity(self.entity)
+    }
+
+    fn type_id(&self, world: &World) -> Option<TypeId> {
+        world
+            .components()
+            .get_info(self.component_id)?
+            .type_id()
     }
     fn reflect_ref<'a>(&self, world: &'a World, path: &ParsedPath) -> Option<&'a dyn Reflect> {
         let from_ptr = self.get_from_ptr(world)?;
@@ -78,8 +87,11 @@ pub struct InspectorContext {
 }
 
 impl InspectorContext {
-    pub fn reflect_ref<'a>(&self, world: &'a World) -> Option<&'a dyn Reflect> {
-        self.root.reflect_ref(world, &self.field_path)
+    pub fn inspect_type_id(&self, world: &World) -> Option<TypeId> {
+        self.root.type_id(world)
+    }
+    pub fn reflect_ref<'a>(&self, world: &'a World) -> &'a dyn Reflect {
+        self.root.reflect_ref(world, &self.field_path).unwrap()
     }
 
     pub fn set_reflect(&self, world: &mut World, value: &dyn Reflect) {
