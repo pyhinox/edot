@@ -1,8 +1,8 @@
 use bevy::ecs::component::ComponentInfo;
 use bevy::prelude::*;
-use bevy::reflect::{ParsedPath};
 use bevy_egui::egui;
-use edot_inspector::root::{EntityComponent, InspectorRoot};
+use edot_inspector::inspectors::inspect_entity_component;
+use edot_inspector::root::{EntityComponent};
 use edot_tab::prelude::{CommandsExt, TabBuilder};
 
 
@@ -47,15 +47,17 @@ fn setup(
 }
 
 fn on_show(_: Entity, world: &mut World, ui: &mut egui::Ui) {
-    for target in world.query_filtered::<Entity, With<Inspecting>>().iter(world) {
-        world
+    let targets: Vec<_> = world
+        .query_filtered::<Entity, With<Transform>>()
+        .iter(world).collect();
+    targets.into_iter().for_each(|target| {
+        let component_ids: Vec<_> = world
             .inspect_entity(target).into_iter()
             .map(ComponentInfo::id)
-            .for_each(|comp_id| {
-                let inspector = EntityComponent::new(target, comp_id);
-                if let Some(value) = inspector.reflect_ref(world, &ParsedPath::parse_static("").unwrap()) {
-                    ui.label(value.reflect_short_type_path());
-                }
-            });
-    }
+            .collect();
+        for id in component_ids {
+            let target = EntityComponent::new(target, id);
+            inspect_entity_component(target, world, ui);
+        };
+    })
 }
