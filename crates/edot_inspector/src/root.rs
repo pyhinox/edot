@@ -3,6 +3,8 @@ use bevy::ecs::component::ComponentId;
 use bevy::prelude::*;
 use bevy::reflect::{ParsedPath, Reflect, ReflectFromPtr, ReflectPathError};
 use bevy::reflect::attributes::CustomAttributes;
+use bevy_egui::egui;
+use crate::buffer::InspectorBuffer;
 
 pub enum InspectorRootId {
     Entity(Entity),
@@ -94,5 +96,25 @@ impl InspectorContext {
 
     pub fn set_value<T: Reflect>(&self, world: &mut World, value: T) {
         self.set_reflect(world, &value);
+    }
+
+    pub fn get_buffer(&self, world: &World, id: egui::Id) -> Option<String> {
+        let buf = world.resource::<InspectorBuffer>();
+        if buf.holder != id {
+            None
+        } else {
+            Some(buf.buffer.clone())
+        }
+    }
+
+    pub fn set_buffer(&self, world: &mut World, id: egui::Id, buf: String) {
+        *world.resource_mut::<InspectorBuffer>() = InspectorBuffer {
+            holder: id,
+            buffer: buf,
+        };
+    }
+
+    pub fn rel_buffer(&self, world: &mut World) {
+        self.set_buffer(world, egui::Id::NULL, String::new());
     }
 }

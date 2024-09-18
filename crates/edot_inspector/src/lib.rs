@@ -1,6 +1,7 @@
 pub mod root;
 pub mod inspectors;
 mod primitive;
+mod buffer;
 
 use bevy::prelude::*;
 use bevy::reflect::GetTypeRegistration;

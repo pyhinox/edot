@@ -12,7 +12,9 @@ impl Plugin for GameViewPlugin {
     fn build(&self, app: &mut App) {
         app
             .init_resource::<GameView>()
-            .add_plugins(GameViewScenePlugin)
+            .add_plugins((
+                GameViewScenePlugin,
+            ))
             .add_systems(Startup, setup)
             .add_systems(PostUpdate, GameViewCamera::sync_viewport)
         ;

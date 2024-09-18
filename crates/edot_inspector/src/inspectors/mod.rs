@@ -40,14 +40,15 @@ pub fn inspect(cx: &InspectorContext, world: &mut World, ui: &mut Ui) {
         let target_ref = cx.reflect_ref(world);
         match target_ref.reflect_ref() {
             ReflectRef::Struct(_) => inspect_struct(cx, world, ui),
-            ReflectRef::TupleStruct(val) => println!("{}", val.reflect_type_path()),
-            ReflectRef::Tuple(val) => println!("{}", val.reflect_type_path()),
-            ReflectRef::List(val) => println!("{}", val.reflect_type_path()),
-            ReflectRef::Array(val) => println!("{}", val.reflect_type_path()),
-            ReflectRef::Map(val) => println!("{}", val.reflect_type_path()),
-            ReflectRef::Enum(val) => println!("{}", val.reflect_type_path()),
-            ReflectRef::Value(val) => println!("{}", val.reflect_type_path()),
-        }
+            _ => (),
+            // ReflectRef::TupleStruct(val) => println!("{}", val.reflect_type_path()),
+            // ReflectRef::Tuple(val) => println!("{}", val.reflect_type_path()),
+            // ReflectRef::List(val) => println!("{}", val.reflect_type_path()),
+            // ReflectRef::Array(val) => println!("{}", val.reflect_type_path()),
+            // ReflectRef::Map(val) => println!("{}", val.reflect_type_path()),
+            // ReflectRef::Enum(val) => println!("{}", val.reflect_type_path()),
+            // ReflectRef::Value(val) => println!("{}", val.reflect_type_path()),
+        };
     };
     egui::CollapsingHeader::new(cx.name.as_str())
         .default_open(false)

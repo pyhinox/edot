@@ -4,6 +4,7 @@ use bevy::app::App;
 use bevy::prelude::{Plugin, Reflect, TypePath, World};
 use bevy::reflect::FromType;
 use bevy_egui::egui::Ui;
+use crate::buffer::InspectorBufferPlugin;
 use crate::primitive::numeric::NumericInspectorPrimitivePlugin;
 use crate::root::InspectorContext;
 
@@ -15,6 +16,7 @@ pub struct InspectorPrimitivePlugin;
 impl Plugin for InspectorPrimitivePlugin {
     fn build(&self, app: &mut App) {
         app
+            .add_plugins(InspectorBufferPlugin)
             .add_plugins(NumericInspectorPrimitivePlugin)
         ;
     }
