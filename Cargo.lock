@@ -1706,6 +1706,7 @@ dependencies = [
  "bevy",
  "bevy_egui",
  "edot_editor",
+ "edot_inspector",
  "edot_tab",
  "egui_dock",
 ]
@@ -1716,7 +1717,16 @@ version = "0.1.0"
 dependencies = [
  "bevy",
  "bevy_egui",
+ "edot_inspector",
  "edot_tab",
+]
+
+[[package]]
+name = "edot_inspector"
+version = "0.1.0"
+dependencies = [
+ "bevy",
+ "bevy_egui",
 ]
 
 [[package]]

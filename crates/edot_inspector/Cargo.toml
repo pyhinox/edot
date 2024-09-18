@@ -1,10 +1,12 @@
 [package]
-name = "edot_editor"
+name = "edot_inspector"
 version.workspace = true
 edition.workspace = true
 
 [dependencies]
 bevy.workspace = true
 bevy_egui.workspace = true
-edot_tab.workspace = true
-edot_inspector.workspace = true
+
+[[example]]
+name = "inspect_entity_component"
+path = "examples/entity_component.rs"
