@@ -1,6 +1,7 @@
 use bevy::prelude::*;
 use bevy::render::camera::Viewport;
 use bevy::window::PrimaryWindow;
+use transform_gizmo_bevy::GizmoCamera;
 use crate::tab::game_view::GameView;
 
 #[derive(Component, Default, Debug)]
@@ -10,6 +11,7 @@ impl GameViewCamera {
     pub fn spawn(commands: &mut Commands) {
         commands.spawn((
             GameViewCamera,
+            GizmoCamera,
             Camera2dBundle {
                 camera: Camera {
                     is_active: false,

@@ -17,7 +17,7 @@ impl Plugin for InspectorPlugin {
     }
 }
 
-#[derive(Default, Debug, Component)]
+#[derive(Default, Debug, Component, Clone, Copy)]
 #[component(storage="SparseSet")]
 pub struct Inspecting;
 

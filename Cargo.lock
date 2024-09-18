@@ -1952,6 +1952,7 @@ dependencies = [
  "bevy_egui",
  "edot_inspector",
  "edot_tab",
+ "transform-gizmo-bevy",
 ]
 
 [[package]]
