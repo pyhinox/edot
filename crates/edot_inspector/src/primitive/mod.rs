@@ -1,16 +1,22 @@
-use bevy::prelude::{Reflect, TypePath, World};
+mod numeric;
+
+use bevy::app::App;
+use bevy::prelude::{Plugin, Reflect, TypePath, World};
 use bevy::reflect::FromType;
 use bevy_egui::egui::Ui;
+use crate::primitive::numeric::NumericInspectorPrimitivePlugin;
 use crate::root::InspectorContext;
 
 pub trait InspectorPrimitive: Reflect + TypePath + 'static {
     fn show(cx: &InspectorContext, world: &mut World, ui: &mut Ui);
 }
 
-impl InspectorPrimitive for bool {
-    fn show(cx: &InspectorContext, _world: &mut World, ui: &mut Ui){
-        let mut val = false;
-        ui.toggle_value(&mut val, cx.name.as_str());
+pub struct InspectorPrimitivePlugin;
+impl Plugin for InspectorPrimitivePlugin {
+    fn build(&self, app: &mut App) {
+        app
+            .add_plugins(NumericInspectorPrimitivePlugin)
+        ;
     }
 }
 

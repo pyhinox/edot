@@ -4,13 +4,13 @@ mod primitive;
 
 use bevy::prelude::*;
 use bevy::reflect::GetTypeRegistration;
-use crate::primitive::{InspectorPrimitive, ReflectInspectorPrimitive};
+use crate::primitive::{InspectorPrimitive, InspectorPrimitivePlugin, ReflectInspectorPrimitive};
 
 pub struct EdotInspectorPlugin;
 
 impl Plugin for EdotInspectorPlugin {
-    fn build(&self, _app: &mut App) {
-        todo!()
+    fn build(&self, app: &mut App) {
+        app.add_plugins(InspectorPrimitivePlugin);
     }
 }
 

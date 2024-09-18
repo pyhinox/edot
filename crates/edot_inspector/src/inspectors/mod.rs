@@ -5,8 +5,6 @@ use bevy_egui::egui;
 use crate::primitive::ReflectInspectorPrimitive;
 use crate::root::{EntityComponent, InspectorContext, InspectorRoot};
 
-#[allow(unused_variables)]
-#[allow(dead_code)]
 pub fn inspect_entity_component(target: EntityComponent, world: &mut World, ui: &mut egui::Ui) {
     let path = ParsedPath(vec![]);
     let Some(target_ref) = target.reflect_ref(world, &path) else {
@@ -24,7 +22,10 @@ pub fn inspect_entity_component(target: EntityComponent, world: &mut World, ui: 
 pub fn inspect(cx: &InspectorContext, world: &mut World, ui: &mut egui::Ui) {
     let primitive = {
         let registry = world.resource::<AppTypeRegistry>().read();
-        let type_id = cx.inspect_type_id(world).unwrap();
+        let type_id =  {
+            let type_info = cx.reflect_ref(world).get_represented_type_info().unwrap();
+            type_info.type_id()
+        };
         registry
             .get_type_data::<ReflectInspectorPrimitive>(type_id)
             .cloned()
