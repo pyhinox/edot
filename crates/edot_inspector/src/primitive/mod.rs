@@ -1,4 +1,5 @@
 mod numeric;
+mod spatial;
 
 use bevy::app::App;
 use bevy::prelude::{Plugin, Reflect, TypePath, World};
