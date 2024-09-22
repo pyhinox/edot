@@ -1956,6 +1956,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "edot_gizmos"
+version = "0.1.0"
+dependencies = [
+ "bevy",
+]
+
+[[package]]
 name = "edot_inspector"
 version = "0.1.0"
 dependencies = [

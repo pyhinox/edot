@@ -1,0 +1,11 @@
+[package]
+name = "edot_gizmos"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+bevy.workspace = true
+
+[[example]]
+path = "examples/hello_gizmos.rs"
+name = "hello_gizmos"

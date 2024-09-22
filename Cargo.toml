@@ -34,3 +34,4 @@ transform-gizmo-bevy = "0.3.0"
 edot_tab = { path = "crates/edot_tab" }
 edot_editor = { path = "crates/edot_editor" }
 edot_inspector = { path = "crates/edot_inspector" }
+edot_gizmos = { path = "crates/edot_gizmos" }
